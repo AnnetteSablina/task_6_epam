@@ -1,5 +1,6 @@
 package by.epamtc.task6.runner;
 
+import by.epamtc.task6.comparator.PlaneComparator;
 import by.epamtc.task6.dao.Dao;
 import by.epamtc.task6.dao.SerializableDao;
 import by.epamtc.task6.exception.NullException;
@@ -42,17 +43,7 @@ public class Runner {
         }
 
         Airline airline = new Airline(planes);
-        airline.sort(new Comparator<Plane>() {
-            @Override
-            public int compare(Plane o1, Plane o2) {
-                return Double.compare(o1.getPassengerCapacity(), o2.getPassengerCapacity()); //first sort by passengers
-            }
-
-            @Override
-            public Comparator<Plane> thenComparing(Comparator<? super Plane> other) {
-                return Comparator.comparing(Plane::getTitle); //then sort by title
-            }
-        });
+        airline.sort(new PlaneComparator());
         System.out.println(airline);
 
         System.out.printf("Total: %f passengers %n", airline.getTotalPassengerCapacity());
