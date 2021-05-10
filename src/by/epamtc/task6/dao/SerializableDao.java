@@ -4,6 +4,8 @@ import by.epamtc.task6.exception.ClassNotFound;
 import by.epamtc.task6.exception.NullException;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class SerializableDao<T> implements Dao<T> {
     @Override
     public List<T> getAll() throws IOException {
         var ret = new ArrayList<T>();
+        if (isEmpty()) return ret;
         try (var stream = openInStream()) {
             int objCount = stream.readInt();
             for (int i = 0; i < objCount; ++i) {
@@ -21,42 +24,51 @@ public class SerializableDao<T> implements Dao<T> {
                 ret.add(p);
             }
         } catch (ClassNotFoundException e) {
-            throw new ClassNotFound(e);
+            throw new IOException(e);
         }
         return ret;
     }
 
     @Override
-    public void add(T obj) throws IOException, NullException {
+    public void add(T obj) throws IOException {
         List<T> old = getAll();
         old.add(obj);
         saveAll(old);
     }
 
     @Override
-    public void add(List<T> items) throws IOException, NullException {
+    public void add(List<T> items) throws IOException{
         List<T> old = getAll();
         old.addAll(items);
         saveAll(items);
     }
 
     @Override
-    public void delete(List<T> items) throws IOException, NullException {
+    public void delete(List<T> items) throws IOException {
         List<T> old = getAll();
         old.removeAll(items);
         saveAll(items);
     }
 
     @Override
-    public void delete(T obj) throws IOException, NullException {
+    public void delete(T obj) throws IOException{
         List<T> old = getAll();
         old.remove(obj);
         saveAll(old);
     }
 
     @Override
-    public void clear() throws IOException, NullException {
+    public void clear() throws IOException {
         saveAll(new ArrayList<>()); //save empty list
+    }
+
+    @Override
+    public boolean isEmpty() {
+        try (var stream = openInStream()) {
+            return stream.readInt() == 0;
+        } catch (IOException e) {
+            return true;
+        }
     }
 
     public SerializableDao(String filename, Class<T> clazz) {
@@ -69,6 +81,11 @@ public class SerializableDao<T> implements Dao<T> {
     }
 
     private ObjectInputStream openInStream() throws IOException {
+        var path = Paths.get(filename);
+        if (!Files.exists(path)) {
+            Files.createFile(path);
+            System.out.println("File created");
+        }
         FileInputStream in = new FileInputStream(filename);
         return new ObjectInputStream(in);
     }
@@ -78,13 +95,11 @@ public class SerializableDao<T> implements Dao<T> {
         return new ObjectOutputStream(f);
     }
 
-    private void saveAll(List<T> items) throws IOException, NullException {
-        if (items == null) throw new NullException("Items is null");
+    private void saveAll(List<T> items) throws IOException {
         try (var stream = openOutStream()) {
             //save the object count
             stream.writeInt(items.size());
             for (var obj: items) {
-                if (obj == null) throw new NullException("Item is null");
                 stream.writeObject(obj);
             }
         }

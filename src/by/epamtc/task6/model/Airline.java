@@ -2,10 +2,15 @@ package by.epamtc.task6.model;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.function.Predicate;
 
 public class Airline {
-    private ArrayList<Plane> planes;
+    private List<Plane> planes;
+
+    public Airline(List<Plane> planes) {
+        this.planes = new ArrayList<>(planes);
+    }
 
     public double getTotalPassengerCapacity() {
         double sum = 0.0;
