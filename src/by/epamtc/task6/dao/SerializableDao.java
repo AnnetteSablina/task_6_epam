@@ -24,41 +24,41 @@ public class SerializableDao<T> implements Dao<T> {
                 ret.add(p);
             }
         } catch (ClassNotFoundException e) {
-            throw new IOException(e);
+            throw new ClassNotFound(e);
         }
         return ret;
     }
 
     @Override
-    public void add(T obj) throws IOException {
+    public void add(T obj) throws IOException, NullException {
         List<T> old = getAll();
         old.add(obj);
         saveAll(old);
     }
 
     @Override
-    public void add(List<T> items) throws IOException{
+    public void add(List<T> items) throws IOException, NullException {
         List<T> old = getAll();
         old.addAll(items);
         saveAll(items);
     }
 
     @Override
-    public void delete(List<T> items) throws IOException {
+    public void delete(List<T> items) throws IOException, NullException {
         List<T> old = getAll();
         old.removeAll(items);
         saveAll(items);
     }
 
     @Override
-    public void delete(T obj) throws IOException{
+    public void delete(T obj) throws IOException, NullException {
         List<T> old = getAll();
         old.remove(obj);
         saveAll(old);
     }
 
     @Override
-    public void clear() throws IOException {
+    public void clear() throws IOException, NullException {
         saveAll(new ArrayList<>()); //save empty list
     }
 
@@ -84,7 +84,6 @@ public class SerializableDao<T> implements Dao<T> {
         var path = Paths.get(filename);
         if (!Files.exists(path)) {
             Files.createFile(path);
-            System.out.println("File created");
         }
         FileInputStream in = new FileInputStream(filename);
         return new ObjectInputStream(in);
@@ -95,12 +94,14 @@ public class SerializableDao<T> implements Dao<T> {
         return new ObjectOutputStream(f);
     }
 
-    private void saveAll(List<T> items) throws IOException {
+    private void saveAll(List<T> items) throws IOException, NullException {
+        if (items == null) throw new NullException("Items is null");
         try (var stream = openOutStream()) {
             //save the object count
             stream.writeInt(items.size());
-            for (var obj: items) {
-                stream.writeObject(obj);
+            for (var obj : items) {
+                if (obj == null) throw new NullException("Item is null");
+                    stream.writeObject(obj);
             }
         }
     }
