@@ -1,6 +1,6 @@
 package by.epamtc.task6.dao;
 
-import by.epamtc.task6.exception.ClassNotFound;
+import by.epamtc.task6.exception.ClassNotFoundException;
 import by.epamtc.task6.exception.NullException;
 
 import java.io.*;
@@ -23,8 +23,8 @@ public class SerializableDao<T> implements Dao<T> {
                 T p = clazz.cast(stream.readObject());
                 ret.add(p);
             }
-        } catch (ClassNotFoundException e) {
-            throw new ClassNotFound(e);
+        } catch (java.lang.ClassNotFoundException e) {
+            throw new ClassNotFoundException(e);
         }
         return ret;
     }
