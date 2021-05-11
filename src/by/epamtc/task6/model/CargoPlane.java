@@ -2,7 +2,7 @@ package by.epamtc.task6.model;
 
 import java.io.Serializable;
 
-public class CargoPlane extends Plane implements Serializable {
+public class CargoPlane extends Plane implements Serializable,Cloneable {
     private boolean isSupersonic;
 
     @Override
@@ -46,6 +46,11 @@ public class CargoPlane extends Plane implements Serializable {
     public int hashCode() {
         int hash = super.hashCode();
         return (int) (hash + 31 * (getFuelConsumption()));
+    }
+
+    @Override
+    public CargoPlane clone() throws CloneNotSupportedException {
+        return (CargoPlane) super.clone();
     }
 
 }

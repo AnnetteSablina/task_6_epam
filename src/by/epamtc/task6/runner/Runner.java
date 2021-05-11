@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Runner {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws CloneNotSupportedException {
         Dao<Plane> dao = new SerializableDao<>("db.txt", Plane.class);
         if (dao.isEmpty()) {
             PlaneFactory<?> factory = new CargoPlaneFactory(new CargoPlane("Boeing 757-200F", 1000000, 4, true));

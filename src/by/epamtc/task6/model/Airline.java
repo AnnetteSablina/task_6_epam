@@ -8,8 +8,11 @@ import java.util.function.Predicate;
 public class Airline {
     private List<Plane> planes;
 
-    public Airline(List<Plane> planes) {
-        this.planes = new ArrayList<>(planes);
+    public Airline(List<Plane> planes) throws CloneNotSupportedException {
+        this.planes = new ArrayList<>(planes.size());
+        for (Plane plane: planes){
+            this.planes.add(plane.clone());
+        }
     }
 
     public double getTotalPassengerCapacity() {

@@ -2,7 +2,7 @@ package by.epamtc.task6.model;
 
 import java.io.Serializable;
 
-public class PassengerPlane extends Plane implements Serializable {
+public class PassengerPlane extends Plane implements Serializable,Cloneable {
     private int engineCount;
 
     @Override
@@ -45,6 +45,11 @@ public class PassengerPlane extends Plane implements Serializable {
     @Override
     public String toString() {
         return super.toString() + " engine count= " + engineCount + " fuel consumption= " + getFuelConsumption();
+    }
+
+    @Override
+    public PassengerPlane clone() throws CloneNotSupportedException {
+        return (PassengerPlane) super.clone();
     }
 
 }

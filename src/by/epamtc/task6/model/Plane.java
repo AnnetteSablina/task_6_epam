@@ -2,7 +2,7 @@ package by.epamtc.task6.model;
 
 import java.io.Serializable;
 
-public abstract class Plane implements Serializable {
+public abstract class Plane implements Serializable, Cloneable {
     private String title;
     private double cargoCapacity; //e.g. tons
     private int passengerCapacity;
@@ -69,4 +69,10 @@ public abstract class Plane implements Serializable {
         int hash = 1;
         return 31 * ((int) cargoCapacity + (title == null ? 0 : title.hashCode()) + passengerCapacity);
     }
+
+    @Override
+    public Plane clone() throws CloneNotSupportedException {
+        return (Plane) super.clone();
+    }
+
 }
