@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Runner {
-    public static void main(String[] args) throws CloneNotSupportedException {
-        Dao<Plane> dao = new SerializableDao<>("db.txt", Plane.class);
+    public static void main(String[] args) {
+        Dao<Plane> dao = new SerializableDao<>("./src/by/epamtc/task6/resources/db.txt", Plane.class);
         if (dao.isEmpty()) {
             PlaneFactory<?> factory = new CargoPlaneFactory(new CargoPlane("Boeing 757-200F", 1000000, 4, true));
             var planes = new ArrayList<Plane>(factory.getNext(5));
@@ -41,8 +41,16 @@ public class Runner {
             return;
         }
 
-        Airline airline = new Airline(planes);
-        airline.sort(new PlaneComparator());
+        Airline airline = null;
+        try {
+            airline = new Airline(planes);
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+
+        if (airline != null) {
+            airline.sort(new PlaneComparator());
+        }
         System.out.println(airline);
 
         System.out.printf("Total: %f passengers %n", airline.getTotalPassengerCapacity());
