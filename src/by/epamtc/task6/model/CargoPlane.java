@@ -4,7 +4,24 @@ import java.io.Serializable;
 
 public class CargoPlane extends Plane implements Serializable,Cloneable {
     private boolean isSupersonic;
+    private int value;//объем внутри самолета
+    private boolean isAnimalTransported;//может ли перевозить животных
 
+    public boolean isAnimalTransported() {
+        return isAnimalTransported;
+    }
+
+    public void setAnimalTransported(boolean animalTransported) {
+        isAnimalTransported = animalTransported;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
+    public void setValue(int value) {
+        this.value = value;
+    }
 
     @Override
     double getFuelConsumption() {
@@ -19,6 +36,8 @@ public class CargoPlane extends Plane implements Serializable,Cloneable {
     public CargoPlane(CargoPlane other) {
         super(other);
         this.isSupersonic = other.isSupersonic;
+        this.value = other.value;
+        this.isAnimalTransported = other.isAnimalTransported;
     }
 
     public boolean isSupersonic() {
@@ -34,19 +53,18 @@ public class CargoPlane extends Plane implements Serializable,Cloneable {
         return super.toString() + " is superSonic= " + isSupersonic + " fuel consumption= " + getFuelConsumption();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        CargoPlane that = (CargoPlane) o;
-        return super.equals(that) && isSupersonic == that.isSupersonic && getFuelConsumption() == that.getFuelConsumption();
+    public CargoPlane(String title, double cargoCapacity, int passengerCapacity, boolean isSupersonic
+            , int value, boolean isAnimalTransported) {
+        super(title, cargoCapacity, passengerCapacity);
+        this.isSupersonic = isSupersonic;
+        this.value = value;
+        this.isAnimalTransported = isAnimalTransported;
     }
 
     @Override
     public int hashCode() {
         int hash = super.hashCode();
-        return (int) (hash + 31 * (getFuelConsumption()));
+        return (int) (hash + 31 * (getFuelConsumption() + value));
     }
 
     @Override

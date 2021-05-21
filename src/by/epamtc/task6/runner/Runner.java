@@ -20,7 +20,7 @@ public class Runner {
     public static void main(String[] args) {
         Dao<Plane> dao = new SerializableDao<>("./src/by/epamtc/task6/resources/db.txt", Plane.class);
         if (dao.isEmpty()) {
-            PlaneFactory<?> factory = new CargoPlaneFactory(new CargoPlane("Boeing 757-200F", 1000000, 4, true));
+            PlaneFactory<?> factory = new CargoPlaneFactory(new CargoPlane("Boeing 757-200F", 1000000, 4, true,600,true));
             var planes = new ArrayList<Plane>(factory.getNext(5));
             factory = new PassengerPlaneFactory(new PassengerPlane("Boeing 747", 1000, 366, 4,16,984,2,1));
             planes.addAll(factory.getNext(10));
