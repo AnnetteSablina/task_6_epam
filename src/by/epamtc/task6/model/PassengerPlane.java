@@ -1,6 +1,7 @@
 package by.epamtc.task6.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class PassengerPlane extends Plane implements Serializable, Cloneable {
     private int engineCount;
@@ -71,25 +72,24 @@ public class PassengerPlane extends Plane implements Serializable, Cloneable {
         this.engineCount = engineCount;
     }
 
-
-   /* @Override
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         PassengerPlane that = (PassengerPlane) o;
-        return super.equals(that) && engineCount == that.engineCount && getFuelConsumption() == that.getFuelConsumption();
+        return engineCount == that.engineCount &&
+                vipPassengerSeatsCount == that.vipPassengerSeatsCount && passengerSeatsCount ==
+                that.passengerSeatsCount && flightAttendantsCount == that.flightAttendantsCount &&
+                toiletsCount == that.toiletsCount;
     }
 
     @Override
     public int hashCode() {
         int hash = super.hashCode();
-        return hash = (int) (31 * (engineCount + getFuelConsumption()));
-    }*/
-
-   /* @Override
-    public String toString() {
-        return super.toString() + " engine count= " + engineCount + " fuel consumption= " + getFuelConsumption();
-    }*/
+        return hash = (int) 31 * engineCount + vipPassengerSeatsCount +
+                passengerSeatsCount + flightAttendantsCount + toiletsCount;
+    }
 
     @Override
     public PassengerPlane clone() throws CloneNotSupportedException {

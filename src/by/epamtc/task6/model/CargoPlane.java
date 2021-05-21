@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class CargoPlane extends Plane implements Serializable,Cloneable {
     private boolean isSupersonic;
 
+
     @Override
     double getFuelConsumption() {
         return isSupersonic ? Math.pow(getCargoCapacity(), 2) : getCargoCapacity();
