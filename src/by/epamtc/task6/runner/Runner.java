@@ -22,7 +22,7 @@ public class Runner {
         if (dao.isEmpty()) {
             PlaneFactory<?> factory = new CargoPlaneFactory(new CargoPlane("Boeing 757-200F", 1000000, 4, true));
             var planes = new ArrayList<Plane>(factory.getNext(5));
-            factory = new PassengerPlaneFactory(new PassengerPlane("Boeing 747", 1000, 366, 4));
+            factory = new PassengerPlaneFactory(new PassengerPlane("Boeing 747", 1000, 366, 4,16));
             planes.addAll(factory.getNext(10));
             try {
                 dao.add(planes);
